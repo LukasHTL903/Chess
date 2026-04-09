@@ -14,9 +14,8 @@ public class Game
     }
     public bool Move(Figure F, string destination)
     {
-        int[] xy = TransformString(destination);
-        int x = xy[0];
-        int y = xy[1];
+        int x = TransformString(destination)[0];
+        int y = TransformString(destination)[1];
 
         if (F.Name == "T")
         {
