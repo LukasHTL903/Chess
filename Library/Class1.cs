@@ -5,9 +5,9 @@ namespace Chess;
 public class Chess
 {
     private Figure[,]? field = new Figure[8,8];
-    private Figure Turm = new("T");
+    private Figure Turm = new("♖");
     public bool Move(Figure F, string destination){
-        if(F.name == "T"){
+        if(F.name == "♖"){
             
         }
         
