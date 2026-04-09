@@ -4,17 +4,41 @@ namespace Chess;
 
 public class Chess
 {
-    private Figure[,]? field = new Figure[8,8];
+    private Figure?[,] field = new Figure?[8,8];
     private Figure Turm = new("♖");
-    public bool Move(Figure F, string destination){
-        if(F.name == "♖"){
-            
+    private Figure Springer = new("");
+    private Figure Laufer = new("");
+    private Figure Dame = new("");
+    private Figure Konig = new("");
+    private Figure Bauer = new("");
+
+
+    public bool Move(Figure F, string destination, int[] position){
+        int[] xy = TransformString(destination);
+        int x = xy[0];
+        int y = xy[1];
+
+        if(F.Name == "♖"){
+            if((x == position[0] && y != position[1]) || (y == position[1] && x != position[0])){
+                if(field != null){
+                    if(field[x, y] == null){
+                        field[position[0], position[1]] = null;
+                        field[x, y] = F;
+                        return true;
+                    } else {
+                        field[position[0], position[1]] = null;
+                        field[x, y].Alive = false;
+                        field[x, y] = F;
+                        return true;
+                    }
+                }
+            }
         }
         
         return false;
     }
 
-    private int[] Transform(string _destination){
+    private static int[] TransformString(string _destination){
         string destination = _destination.Trim();
         int[] position = new int[2];
 
@@ -50,13 +74,14 @@ public class Figure
 {
     private string _name;
     private bool _firstmove;
-    
+    private bool _alive;
+
     public Figure(string n){
         _name = n;
         _firstmove = false;
     }
 
-    public bool firstmove {
+    public bool Firstmove {
         get{return _firstmove;}
         set{
             if(value == false){
@@ -67,8 +92,19 @@ public class Figure
         }
     }
 
-    public string name {
+    public string Name {
         get{return _name;}
+    }
+
+    public bool Alive {
+        get{return _alive;}
+        set{
+            if(value == true){
+                throw new ArgumentException("You can't make a figure alive again.");
+            } else {
+                _alive = value;
+            }
+        }
     }
 }
 
