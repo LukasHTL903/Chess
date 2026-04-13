@@ -9,10 +9,13 @@ public class Game
 
     public void SetFigure(Figure F, string destination)
     {
-        int x = TransformString(destination)[0];
-        int y = TransformString(destination)[1];
+        int x = TransformString(destination)[1];
+        int y = TransformString(destination)[0];
 
-        field[x, y] = F;
+        field[y, x] = F;
+
+        F.Position[0] = x;
+        F.Position[1] = y;
     }
     public bool Move(Figure F, string destination)
     {
@@ -21,30 +24,31 @@ public class Game
             return false;
         }
 
-        int x = TransformString(destination)[0];
-        int y = TransformString(destination)[1];
+        int x = TransformString(destination)[1];
+        int y = TransformString(destination)[0];
 
-        int xCurrent = F.Position[1];
-        int yCurrent = F.Position[0];
+        int xCurrent = F.Position[0];
+        int yCurrent = F.Position[1];
 
         if (F.Name == "T")
         {
             bool inRange = false;
 
-            if (y > yCurrent && x == xCurrent)
+            if (x > xCurrent && y == yCurrent)
             {
                 Console.WriteLine("Up");
                 for (int count = 1; count < 8; count++)
                 {
                     // up in Range?
-                    if(yCurrent + count > 7){
+                    if(xCurrent + count > 7){
                         break;
                     }
-                    if (yCurrent + count == y)
+                    if (xCurrent + count == x)
                     {
                         inRange = true;
+                        break;
                     }
-                    if (field[xCurrent, yCurrent + count] != null)
+                    if (field[yCurrent, xCurrent + count] != null)
                     {
                         break;
                     }
@@ -52,40 +56,21 @@ public class Game
             }
 
 
-            if (x > xCurrent && y == yCurrent)
+            if (y > yCurrent && x == xCurrent)
             {
                 Console.WriteLine("Right");
                 for (int count = 1; count < 8; count++)
                 {
                     // right in Range?
-                    if(xCurrent + count > 7){
+                    if(yCurrent + count > 7){
                         break;
                     }
-                     if (xCurrent + count == x)
+                     if (yCurrent + count == y)
                     {   
                         inRange = true;
-                    }
-                    if (field[xCurrent + count, yCurrent] != null)
-                    {
                         break;
                     }
-                }
-            }
-
-            if (x < xCurrent && y == yCurrent)
-            {
-                Console.WriteLine("Left");
-                for (int count = 1; count < 8; count++)
-                {
-                    // left in Range?
-                    if(xCurrent - count < 0){
-                        break;
-                    }
-                    if (xCurrent - count == x)
-                    {
-                        inRange = true;
-                    }
-                    if (field[xCurrent - count, yCurrent] != null)
+                    if (field[yCurrent + count, xCurrent] != null)
                     {
                         break;
                     }
@@ -94,18 +79,40 @@ public class Game
 
             if (y < yCurrent && x == xCurrent)
             {
-                Console.WriteLine("Down");
+                Console.WriteLine("Left");
                 for (int count = 1; count < 8; count++)
                 {
-                    // down in Range?
+                    // left in Range?
                     if(yCurrent - count < 0){
                         break;
                     }
                     if (yCurrent - count == y)
                     {
                         inRange = true;
+                        break;
                     }
-                    if (field[xCurrent, yCurrent - count] != null)
+                    if (field[yCurrent - count, xCurrent] != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (x < xCurrent && y == yCurrent)
+            {
+                Console.WriteLine("Down");
+                for (int count = 1; count < 8; count++)
+                {
+                    // down in Range?
+                    if(xCurrent - count < 0){
+                        break;
+                    }
+                    if (xCurrent - count == x)
+                    {
+                        inRange = true;
+                        break;
+                    }
+                    if (field[yCurrent, xCurrent - count] != null)
                     {
                         break;
                     }
@@ -114,25 +121,25 @@ public class Game
 
             if (inRange)
             {
-                if (field[x, y] == null)                            //if no Enemy on new spot
+                if (field[y, x] == null)                            //if no Enemy on new spot
                 {
-                    field[F.Position[0], F.Position[1]] = null;
-                    field[x, y] = F;
+                    field[yCurrent, xCurrent] = null;
+                    field[y, x] = F;
 
                     //set new Position
-                    F.Position[0] = x;
-                    F.Position[1] = y;
+                    F.Position[0] = y;
+                    F.Position[1] = x;
                     return true;
                 }
                 else                                                //if Enemy on new spot
                 {
-                    field[F.Position[0], F.Position[1]] = null;
-                    field[x, y].Alive = false;
-                    field[x, y] = F;
+                    field[yCurrent, xCurrent] = null;
+                    field[y, x].Alive = false;
+                    field[y, x] = F;
 
                     //set new Position
-                    F.Position[0] = x;
-                    F.Position[1] = y;
+                    F.Position[0] = y;
+                    F.Position[1] = x;
                     return true;
                 }
             }
