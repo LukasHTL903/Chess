@@ -36,10 +36,9 @@ public class Game
 
             if (x > xCurrent && y == yCurrent)
             {
-                Console.WriteLine("Up");
                 for (int count = 1; count < 8; count++)
                 {
-                    // up in Range?
+                    // right in Range?
                     if(xCurrent + count > 7){
                         break;
                     }
@@ -58,10 +57,9 @@ public class Game
 
             if (y > yCurrent && x == xCurrent)
             {
-                Console.WriteLine("Right");
                 for (int count = 1; count < 8; count++)
                 {
-                    // right in Range?
+                    // down in Range?
                     if(yCurrent + count > 7){
                         break;
                     }
@@ -79,10 +77,9 @@ public class Game
 
             if (y < yCurrent && x == xCurrent)
             {
-                Console.WriteLine("Left");
                 for (int count = 1; count < 8; count++)
                 {
-                    // left in Range?
+                    // up in Range?
                     if(yCurrent - count < 0){
                         break;
                     }
@@ -100,10 +97,9 @@ public class Game
 
             if (x < xCurrent && y == yCurrent)
             {
-                Console.WriteLine("Down");
                 for (int count = 1; count < 8; count++)
                 {
-                    // down in Range?
+                    // left in Range?
                     if(xCurrent - count < 0){
                         break;
                     }
