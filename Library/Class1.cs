@@ -1,12 +1,14 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace Chess;
 
 public class Game
 {
-    private Figure[,] field = new Figure[8, 8];
+    private Figure?[,] field = new Figure[8, 8];
 
-    public void SetFigure(Figure F, string destination){
+    public void SetFigure(Figure F, string destination)
+    {
         int x = TransformString(destination)[0];
         int y = TransformString(destination)[1];
 
@@ -14,51 +16,127 @@ public class Game
     }
     public bool Move(Figure F, string destination)
     {
+        if (field == null)
+        {
+            return false;
+        }
+
         int x = TransformString(destination)[0];
         int y = TransformString(destination)[1];
 
+        int xCurrent = F.Position[1];
+        int yCurrent = F.Position[0];
+
         if (F.Name == "T")
         {
-            if (field != null)
-            {
-                bool inRange = false;
-                for (int count = 0; count < 8; count++)
-                {
-                    if (F.Position[0] + count == x && F.Position[1] == y)
-                    {
-                        inRange = true;
-                    }
-                    if (F.Position[0] == x && F.Position[1] + count == y)
-                    {
-                        inRange = true;
-                    }
-                    if (F.Position[0] - count == x && F.Position[1] == y)
-                    {
-                        inRange = true;
-                    }
-                    if (F.Position[0] == x && F.Position[1] - count == y)
-                    {
-                        inRange = true;
-                    }
-                }
+            bool inRange = false;
 
-                if (inRange)
+            if (y > yCurrent && x == xCurrent)
+            {
+                Console.WriteLine("Up");
+                for (int count = 1; count < 8; count++)
                 {
-                    if (field[x, y] == null)
-                    {
-                        field[F.Position[0], F.Position[1]] = null;
-                        field[x, y] = F;
-                        return true;
+                    // up in Range?
+                    if(yCurrent + count > 7){
+                        break;
                     }
-                    else
+                    if (yCurrent + count == y)
                     {
-                        field[F.Position[0], F.Position[1]] = null;
-                        field[x, y].Alive = false;
-                        field[x, y] = F;
-                        return true;
+                        inRange = true;
+                    }
+                    if (field[xCurrent, yCurrent + count] != null)
+                    {
+                        break;
                     }
                 }
             }
+
+
+            if (x > xCurrent && y == yCurrent)
+            {
+                Console.WriteLine("Right");
+                for (int count = 1; count < 8; count++)
+                {
+                    // right in Range?
+                    if(xCurrent + count > 7){
+                        break;
+                    }
+                     if (xCurrent + count == x)
+                    {   
+                        inRange = true;
+                    }
+                    if (field[xCurrent + count, yCurrent] != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (x < xCurrent && y == yCurrent)
+            {
+                Console.WriteLine("Left");
+                for (int count = 1; count < 8; count++)
+                {
+                    // left in Range?
+                    if(xCurrent - count < 0){
+                        break;
+                    }
+                    if (xCurrent - count == x)
+                    {
+                        inRange = true;
+                    }
+                    if (field[xCurrent - count, yCurrent] != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (y < yCurrent && x == xCurrent)
+            {
+                Console.WriteLine("Down");
+                for (int count = 1; count < 8; count++)
+                {
+                    // down in Range?
+                    if(yCurrent - count < 0){
+                        break;
+                    }
+                    if (yCurrent - count == y)
+                    {
+                        inRange = true;
+                    }
+                    if (field[xCurrent, yCurrent - count] != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (inRange)
+            {
+                if (field[x, y] == null)                            //if no Enemy on new spot
+                {
+                    field[F.Position[0], F.Position[1]] = null;
+                    field[x, y] = F;
+
+                    //set new Position
+                    F.Position[0] = x;
+                    F.Position[1] = y;
+                    return true;
+                }
+                else                                                //if Enemy on new spot
+                {
+                    field[F.Position[0], F.Position[1]] = null;
+                    field[x, y].Alive = false;
+                    field[x, y] = F;
+
+                    //set new Position
+                    F.Position[0] = x;
+                    F.Position[1] = y;
+                    return true;
+                }
+            }
+
         }
         else if (F.Name == "")
         {
@@ -116,7 +194,8 @@ public class Game
         }
 
         position[0] -= 1;
-        if(!(position[0] >= 0 && position[0] <= 7)){
+        if (!(position[0] >= 0 && position[0] <= 7))
+        {
             throw new ArgumentException("Second input has to be between 1-8");
         }
 
@@ -130,7 +209,7 @@ public class Game
         bool cycle = false;
 
         output += $"  a   b   c   d   e   f   g   h{Environment.NewLine}";
-        
+
         for (int count = 0; count < 8; count++)
         {
             output += $"+---+---+---+---+---+---+---+---+{Environment.NewLine}";
@@ -154,7 +233,9 @@ public class Game
                         if (i % 2 == 0)
                         {
                             output += $"# | ";
-                        } else {
+                        }
+                        else
+                        {
                             output += $"  | ";
                         }
                     }
@@ -163,7 +244,9 @@ public class Game
                         if (i % 2 == 0)
                         {
                             output += $"  | ";
-                        } else {
+                        }
+                        else
+                        {
                             output += $"# | ";
                         }
                     }

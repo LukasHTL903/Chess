@@ -5539,11 +5539,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/config/workspace/Chess/Library.test/Library.test.csproj",
+      "projectUniqueName": "/workspace/Chess/Library.test/Library.test.csproj",
       "projectName": "Library.test",
-      "projectPath": "/config/workspace/Chess/Library.test/Library.test.csproj",
+      "projectPath": "/workspace/Chess/Library.test/Library.test.csproj",
       "packagesPath": "/config/.nuget/packages/",
-      "outputPath": "/config/workspace/Chess/Library.test/obj/",
+      "outputPath": "/workspace/Chess/Library.test/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/config/.nuget/NuGet/NuGet.Config"
@@ -5558,8 +5558,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/config/workspace/Chess/Library/Library.csproj": {
-              "projectPath": "/config/workspace/Chess/Library/Library.csproj"
+            "/workspace/Chess/Library/Library.csproj": {
+              "projectPath": "/workspace/Chess/Library/Library.csproj"
             }
           }
         }

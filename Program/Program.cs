@@ -12,5 +12,9 @@ public class Program{
         game.SetFigure(Turm, "      c     ,        5   ");
 
         Console.WriteLine(game);
+
+        Console.WriteLine(game.Move(Turm, "g5"));
+
+        Console.WriteLine(game);
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MeE0mPGdDml/1GQv4BcsgpjXwJn8tfjrcqjsxUUcmTy9DltD12EJ/mTvcB8f8N03a1ZWcN97GrdSbmSZNA021g==",
+  "dgSpecHash": "w6oHTyoTweGqpFMc90JzlEGDCKEOb2DtPjlXmZo4rBGDrEm90MC9Oj0Jj7KfXzz8tBv35NQRrybtmEWdQon2Cg==",
   "success": true,
-  "projectFilePath": "/config/workspace/Chess/Library.test/Library.test.csproj",
+  "projectFilePath": "/workspace/Chess/Library.test/Library.test.csproj",
   "expectedPackageFiles": [
     "/config/.nuget/packages/coverlet.collector/6.0.0/coverlet.collector.6.0.0.nupkg.sha512",
     "/config/.nuget/packages/microsoft.codecoverage/17.6.0/microsoft.codecoverage.17.6.0.nupkg.sha512",
