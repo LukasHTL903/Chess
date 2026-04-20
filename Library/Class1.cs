@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Net.Http.Headers;
 
 namespace Chess;
@@ -17,6 +18,29 @@ public class Game
         F.Position[0] = x;
         F.Position[1] = y;
     }
+
+    private void SetFigure(Figure F, int x, int y, int xCurrent, int yCurrent)
+    {
+        if (field[y, x] == null)                            //if no Enemy on new spot
+        {
+            field[yCurrent, xCurrent] = null;
+            field[y, x] = F;
+
+            //set new Position
+            F.Position[1] = y;
+            F.Position[0] = x;
+        }
+        else                                                //if Enemy on new spot
+        {
+            field[yCurrent, xCurrent] = null;
+            field[y, x].Alive = false;
+            field[y, x] = F;
+
+            //set new Position
+            F.Position[1] = y;
+            F.Position[0] = x;
+        }
+    }
     public bool Move(Figure F, string destination)
     {
         if (field == null)
@@ -30,7 +54,7 @@ public class Game
         int xCurrent = F.Position[0];
         int yCurrent = F.Position[1];
 
-        if (F.Name == "T")
+        if (F.Name == "T" || F.Name == "t")
         {
             bool inRange = false;
 
@@ -39,7 +63,8 @@ public class Game
                 for (int count = 1; count < 8; count++)
                 {
                     // right in Range?
-                    if(xCurrent + count > 7){
+                    if (xCurrent + count > 7)
+                    {
                         break;
                     }
                     if (xCurrent + count == x)
@@ -60,11 +85,12 @@ public class Game
                 for (int count = 1; count < 8; count++)
                 {
                     // down in Range?
-                    if(yCurrent + count > 7){
+                    if (yCurrent + count > 7)
+                    {
                         break;
                     }
-                     if (yCurrent + count == y)
-                    {   
+                    if (yCurrent + count == y)
+                    {
                         inRange = true;
                         break;
                     }
@@ -80,7 +106,8 @@ public class Game
                 for (int count = 1; count < 8; count++)
                 {
                     // up in Range?
-                    if(yCurrent - count < 0){
+                    if (yCurrent - count < 0)
+                    {
                         break;
                     }
                     if (yCurrent - count == y)
@@ -100,7 +127,8 @@ public class Game
                 for (int count = 1; count < 8; count++)
                 {
                     // left in Range?
-                    if(xCurrent - count < 0){
+                    if (xCurrent - count < 0)
+                    {
                         break;
                     }
                     if (xCurrent - count == x)
@@ -117,33 +145,27 @@ public class Game
 
             if (inRange)
             {
-                if (field[y, x] == null)                            //if no Enemy on new spot
-                {
-                    field[yCurrent, xCurrent] = null;
-                    field[y, x] = F;
+                SetFigure(F, x, y, xCurrent, yCurrent);
+                return true;
+            }
+        }
+        else if (F.Name == "K" || F.Name == "k")
+        {
+            bool inRange = false;
 
-                    //set new Position
-                    F.Position[0] = y;
-                    F.Position[1] = x;
-                    return true;
-                }
-                else                                                //if Enemy on new spot
-                {
-                    field[yCurrent, xCurrent] = null;
-                    field[y, x].Alive = false;
-                    field[y, x] = F;
+            int xdistance = Math.Abs(x - xCurrent);
+            int ydistance = Math.Abs(y - yCurrent);
 
-                    //set new Position
-                    F.Position[0] = y;
-                    F.Position[1] = x;
-                    return true;
-                }
+            if(xdistance <= 1 && yCurrent <= 1 && xdistance + ydistance > 0)
+            {
+                inRange = true;
             }
 
-        }
-        else if (F.Name == "")
-        {
-
+            if (inRange)
+            {
+                SetFigure(F, x, y, xCurrent, yCurrent);
+                return true;
+            }
         }
 
         return false;

@@ -6,19 +6,23 @@ public class Program
     public static void Main()
     {
         Game game = new();
-        int[] position = new int[2];
-        position[0] = 2;
-        position[1] = 2;
-        Figure Turm = new("T", position);
+        int[] position = [1, 1];
+        int[] enemypos = [0, 6];
+        Figure King = new("K", position);
+        Figure Enemy = new("T", enemypos);
 
-        game.SetFigure(Turm, "      a     ,        1   ");
-
-        Console.WriteLine(game);
-        Console.WriteLine("Where do you want to go with your Turm?");
-
-        game.Move(Turm, Console.ReadLine());
+        game.SetFigure(King, "      b     ,        2   ");
+        game.SetFigure(Enemy, "a, 7");
 
         Console.WriteLine(game);
+        while(true){
+            Console.WriteLine($"Where do you want to go with your {King.Name}");
 
+            game.Move(King, Console.ReadLine());
+
+            Console.WriteLine(game);
+            Console.WriteLine($"x: {King.Position[1]}, y:{King.Position[0]}");
+            Console.WriteLine($"Enemy is Alive: {Enemy.Alive}");
+        }
     }
 }
