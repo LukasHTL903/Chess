@@ -156,7 +156,7 @@ public class Game
             int xdistance = Math.Abs(x - xCurrent);
             int ydistance = Math.Abs(y - yCurrent);
 
-            if(xdistance <= 1 && yCurrent <= 1 && xdistance + ydistance > 0)
+            if(xdistance <= 1 && ydistance <= 1 && (xdistance + ydistance) > 0)
             {
                 inRange = true;
             }
@@ -166,6 +166,38 @@ public class Game
                 SetFigure(F, x, y, xCurrent, yCurrent);
                 return true;
             }
+        }
+        else if (F.Name == "P" || F.Name == "p") 
+        {
+            bool inRange = false;
+            
+            if(F.Name == "p")
+            {
+                if(yCurrent + 1 == y && xCurrent == x){
+                    inRange = true;
+                }
+
+                if(field[y, x] != null && yCurrent + 1 == y && Math.Abs(xCurrent - x) == 1){
+                    inRange = true; 
+                }
+            }
+
+            if(F.Name == "P")
+            {
+                if(yCurrent - 1 == y && xCurrent == x){
+                    inRange = true;
+                }
+
+                if(field[y, x] != null && yCurrent - 1 == y && Math.Abs(xCurrent - x) == 1){
+                    inRange = true; 
+                }
+            }
+            
+            if(inRange){
+                SetFigure(F, x, y, xCurrent, yCurrent);
+                return true;
+            }
+            
         }
 
         return false;
