@@ -207,4 +207,4 @@ FakesAssemblies/
 .cr/personal
 
 # JetBrains Rider
-*.sln.iml
+*.sln.imlDebug
