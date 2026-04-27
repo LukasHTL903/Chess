@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/config/workspace/Chess/Program/Program.csproj",
+      "projectUniqueName": "/workspace/Chess/Program/Program.csproj",
       "projectName": "Program",
-      "projectPath": "/config/workspace/Chess/Program/Program.csproj",
+      "projectPath": "/workspace/Chess/Program/Program.csproj",
       "packagesPath": "/config/.nuget/packages/",
-      "outputPath": "/config/workspace/Chess/Program/obj/",
+      "outputPath": "/workspace/Chess/Program/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/config/.nuget/NuGet/NuGet.Config"
@@ -51,8 +51,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/config/workspace/Chess/Library/Library.csproj": {
-              "projectPath": "/config/workspace/Chess/Library/Library.csproj"
+            "/workspace/Chess/Library/Library.csproj": {
+              "projectPath": "/workspace/Chess/Library/Library.csproj"
             }
           }
         }
