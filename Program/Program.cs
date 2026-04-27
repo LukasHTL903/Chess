@@ -15,7 +15,7 @@ public class Program
         game.SetFigure(Enemy, "a, 7");
 
         Console.WriteLine(game);
-        while(true){
+        for(int count = 0; count < 3; count ++){
             Console.WriteLine($"Where do you want to go with your {King.Name}");
 
             game.Move(King, Console.ReadLine());
