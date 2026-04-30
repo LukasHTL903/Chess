@@ -198,6 +198,22 @@ public class Game
                 return true;
             }
             
+        } else if(F.Name == "Kn" || F.Name == "kn"){
+            bool inRange = false;
+
+            int xdistance = Math.Abs(x - xCurrent);
+            int ydistance = Math.Abs(y - yCurrent);
+
+            if((xdistance == 2 && ydistance == 1) || (ydistance == 2 && xdistance == 1))
+            {
+                inRange = true;
+            }
+
+            if(inRange)
+            {
+                SetFigure(F, x, y, xCurrent, yCurrent);
+                return true;
+            }
         }
 
         return false;
