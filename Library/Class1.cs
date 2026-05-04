@@ -19,9 +19,9 @@ public class Game
         F.Position[1] = y;
     }
 
-    private void SetFigure(Figure F, int x, int y, int xCurrent, int yCurrent)
+    private bool SetFigure(Figure F, int x, int y, int xCurrent, int yCurrent)
     {
-        if (field[y, x] == null)                            //if no Enemy on new spot
+        if (field[y, x] == null)                           //if no Enemy on new spot
         {
             field[yCurrent, xCurrent] = null;
             field[y, x] = F;
@@ -29,17 +29,23 @@ public class Game
             //set new Position
             F.Position[1] = y;
             F.Position[0] = x;
+            return true;
         }
         else                                                //if Enemy on new spot
         {
-            field[yCurrent, xCurrent] = null;
-            field[y, x].Alive = false;
-            field[y, x] = F;
+            if(field[y, x].IsWhite != field[yCurrent, xCurrent].IsWhite){
+                field[yCurrent, xCurrent] = null;
+                field[y, x].Alive = false;
+                field[y, x] = F;
 
-            //set new Position
-            F.Position[1] = y;
-            F.Position[0] = x;
+                //set new Position
+                F.Position[1] = y;
+                F.Position[0] = x;
+                return true;
+            }
         }
+        
+        return false;
     }
     public bool Move(Figure F, string destination)
     {
@@ -54,169 +60,322 @@ public class Game
         int xCurrent = F.Position[0];
         int yCurrent = F.Position[1];
 
-        if (F.Name == "T" || F.Name == "t")
-        {
-            bool inRange = false;
-
-            if (x > xCurrent && y == yCurrent)
+        if (F.Name == "R" || F.Name == "r")
+        {  
+            if (RookMove(x, y, xCurrent, yCurrent))
             {
-                for (int count = 1; count < 8; count++)
-                {
-                    // right in Range?
-                    if (xCurrent + count > 7)
-                    {
-                        break;
-                    }
-                    if (xCurrent + count == x)
-                    {
-                        inRange = true;
-                        break;
-                    }
-                    if (field[yCurrent, xCurrent + count] != null)
-                    {
-                        break;
-                    }
+                if(SetFigure(F, x, y, xCurrent, yCurrent)){
+                    return true;
+                } else {
+                    return false;
                 }
-            }
-
-
-            if (y > yCurrent && x == xCurrent)
-            {
-                for (int count = 1; count < 8; count++)
-                {
-                    // down in Range?
-                    if (yCurrent + count > 7)
-                    {
-                        break;
-                    }
-                    if (yCurrent + count == y)
-                    {
-                        inRange = true;
-                        break;
-                    }
-                    if (field[yCurrent + count, xCurrent] != null)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            if (y < yCurrent && x == xCurrent)
-            {
-                for (int count = 1; count < 8; count++)
-                {
-                    // up in Range?
-                    if (yCurrent - count < 0)
-                    {
-                        break;
-                    }
-                    if (yCurrent - count == y)
-                    {
-                        inRange = true;
-                        break;
-                    }
-                    if (field[yCurrent - count, xCurrent] != null)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            if (x < xCurrent && y == yCurrent)
-            {
-                for (int count = 1; count < 8; count++)
-                {
-                    // left in Range?
-                    if (xCurrent - count < 0)
-                    {
-                        break;
-                    }
-                    if (xCurrent - count == x)
-                    {
-                        inRange = true;
-                        break;
-                    }
-                    if (field[yCurrent, xCurrent - count] != null)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            if (inRange)
-            {
-                SetFigure(F, x, y, xCurrent, yCurrent);
-                return true;
             }
         }
         else if (F.Name == "K" || F.Name == "k")
         {
-            bool inRange = false;
-
-            int xdistance = Math.Abs(x - xCurrent);
-            int ydistance = Math.Abs(y - yCurrent);
-
-            if(xdistance <= 1 && ydistance <= 1 && (xdistance + ydistance) > 0)
+            if (KingMove(x, y, xCurrent, yCurrent))
             {
-                inRange = true;
-            }
-
-            if (inRange)
-            {
-                SetFigure(F, x, y, xCurrent, yCurrent);
-                return true;
+                if(SetFigure(F, x, y, xCurrent, yCurrent)){
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
         else if (F.Name == "P" || F.Name == "p") 
         {
-            bool inRange = false;
-            
-            if(F.Name == "p")
-            {
-                if(yCurrent + 1 == y && xCurrent == x){
-                    inRange = true;
-                }
-
-                if(field[y, x] != null && yCurrent + 1 == y && Math.Abs(xCurrent - x) == 1){
-                    inRange = true; 
-                }
-            }
-
-            if(F.Name == "P")
-            {
-                if(yCurrent - 1 == y && xCurrent == x){
-                    inRange = true;
-                }
-
-                if(field[y, x] != null && yCurrent - 1 == y && Math.Abs(xCurrent - x) == 1){
-                    inRange = true; 
+            if(PawnMove(F, x, y, xCurrent, yCurrent)){
+                if(SetFigure(F, x, y, xCurrent, yCurrent)){
+                    return true;
+                } else {
+                    return false;
                 }
             }
             
-            if(inRange){
-                SetFigure(F, x, y, xCurrent, yCurrent);
-                return true;
-            }
-            
-        } else if(F.Name == "Kn" || F.Name == "kn"){
-            bool inRange = false;
-
-            int xdistance = Math.Abs(x - xCurrent);
-            int ydistance = Math.Abs(y - yCurrent);
-
-            if((xdistance == 2 && ydistance == 1) || (ydistance == 2 && xdistance == 1))
+        } else if(F.Name == "Kn" || F.Name == "kn")
+        {
+            if(KnightMove(x, y, xCurrent, yCurrent))
             {
-                inRange = true;
+                if(SetFigure(F, x, y, xCurrent, yCurrent)){
+                    return true;
+                } else {
+                    return false;
+                }
+                
             }
 
-            if(inRange)
-            {
-                SetFigure(F, x, y, xCurrent, yCurrent);
-                return true;
+        } else if (F.Name == "B" || F.Name == "b")
+        {
+            if(BishopMove(x, y, xCurrent, yCurrent)){
+                if(SetFigure(F, x, y, xCurrent, yCurrent)){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        } else if(F.Name == "Q" || F.Name == "q")
+        {
+            if(BishopMove(x, y, xCurrent, yCurrent) || RookMove(x, y, xCurrent, yCurrent)){
+                if(SetFigure(F, x, y, xCurrent, yCurrent)){
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
 
         return false;
+    }
+
+    private bool PawnMove(Figure F, int x, int y, int xCurrent, int yCurrent)
+    {
+        bool inRange = false;
+        
+        if(F.Name == "p")
+        {
+            if(yCurrent + 1 == y && xCurrent == x){
+                inRange = true;
+            }
+
+            if(field[y, x] != null && yCurrent + 1 == y && Math.Abs(xCurrent - x) == 1){
+                inRange = true; 
+            }
+
+            if(yCurrent + 2 == y && xCurrent == x && yCurrent == 1 && field[y - 1, x] == null)
+            {
+                inRange = true;
+            }
+        }
+
+        if(F.Name == "P")
+        {
+            if(yCurrent - 1 == y && xCurrent == x){
+                inRange = true;
+            }
+
+            if(field[y, x] != null && yCurrent - 1 == y && Math.Abs(xCurrent - x) == 1){
+                inRange = true; 
+            }
+
+            if(yCurrent - 2 == y && xCurrent == x && yCurrent == 6 && field[y + 1, x] == null)
+            {
+                inRange = true;
+            }
+        }
+
+        return inRange;
+    }
+
+    private bool KingMove(int x, int y, int xCurrent, int yCurrent){
+        bool inRange = false;
+
+        int xdistance = Math.Abs(x - xCurrent);
+        int ydistance = Math.Abs(y - yCurrent);
+
+        if(xdistance <= 1 && ydistance <= 1 && (xdistance + ydistance) > 0)
+        {
+            inRange = true;
+        }
+        
+        return inRange;
+    }
+
+    private bool KnightMove(int x, int y, int xCurrent, int yCurrent)
+    {
+    bool inRange = false;
+
+        int xdistance = Math.Abs(x - xCurrent);
+        int ydistance = Math.Abs(y - yCurrent);
+
+        if((xdistance == 2 && ydistance == 1) || (ydistance == 2 && xdistance == 1))
+        {
+            inRange = true;
+        }
+
+        return inRange;
+    }
+
+    private bool BishopMove(int x, int y, int xCurrent, int yCurrent)
+    {
+    bool inRange = false;
+
+        if (x > xCurrent && y > yCurrent){
+            for (int count = 1; count < 8; count++)
+            {
+                // downright Range?
+                if (xCurrent + count > 7 || yCurrent + count > 7)
+                {
+                    break;
+                }
+                if (xCurrent + count == x && yCurrent + count == y)
+                {
+                    inRange = true;
+                    break;
+                }
+                if (field[yCurrent + count, xCurrent + count] != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (x > xCurrent && y < yCurrent)
+        {
+            for (int count = 1; count < 8; count++)
+            {
+                // upright in Range?
+                if (yCurrent - count < 0 || xCurrent + count > 7)
+                {
+                    break;
+                }
+                if (yCurrent - count == y && xCurrent + count == x)
+                {
+                    inRange = true;
+                    break;
+                }
+                if (field[yCurrent - count, xCurrent + count] != null)
+                {
+                    break;
+                }
+            }
+        }
+        
+        if (x < xCurrent && y > yCurrent)
+        {
+            for (int count = 1; count < 8; count++)
+            {
+                // downleft in Range?
+                if (yCurrent + count > 7 || xCurrent - count < 0)
+                {
+                    break;
+                }
+                if (yCurrent + count == y && xCurrent - count == x)
+                {
+                    inRange = true;
+                    break;
+                }
+                if (field[yCurrent + count, xCurrent - count] != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (x < xCurrent && y < yCurrent)
+        {
+            for (int count = 1; count < 8; count++)
+            {
+                // upleft in Range?
+                if (yCurrent - count < 0 || xCurrent - count < 0)
+                {
+                    break;
+                }
+                if (yCurrent - count == y && xCurrent - count == x)
+                {
+                    inRange = true;
+                    break;
+                }
+                if (field[yCurrent - count, xCurrent - count] != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        return inRange;
+    }
+
+    private bool RookMove(int x, int y, int xCurrent, int yCurrent)
+    {
+        bool inRange = false;
+
+        if (x > xCurrent && y == yCurrent)
+        {
+            for (int count = 1; count < 8; count++)
+            {
+                // right in Range?
+                if (xCurrent + count > 7)
+                {
+                    break;
+                }
+                if (xCurrent + count == x)
+                {
+                    inRange = true;
+                    break;
+                }
+                if (field[yCurrent, xCurrent + count] != null)
+                {
+                    break;
+                }
+            }
+        }
+
+
+        if (y > yCurrent && x == xCurrent)
+        {
+            for (int count = 1; count < 8; count++)
+            {
+                // down in Range?
+                if (yCurrent + count > 7)
+                {
+                    break;
+                }
+                if (yCurrent + count == y)
+                {
+                    inRange = true;
+                    break;
+                }
+                if (field[yCurrent + count, xCurrent] != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (y < yCurrent && x == xCurrent)
+        {
+            for (int count = 1; count < 8; count++)
+            {
+                // up in Range?
+                if (yCurrent - count < 0)
+                {
+                    break;
+                }
+                if (yCurrent - count == y)
+                {
+                    inRange = true;
+                    break;
+                }
+                if (field[yCurrent - count, xCurrent] != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (x < xCurrent && y == yCurrent)
+        {
+            for (int count = 1; count < 8; count++)
+            {
+                // left in Range?
+                if (xCurrent - count < 0)
+                {
+                    break;
+                }
+                if (xCurrent - count == x)
+                {
+                    inRange = true;
+                    break;
+                }
+                if (field[yCurrent, xCurrent - count] != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        return inRange;
     }
 
     private static int[] TransformString(string _destination)
@@ -335,32 +494,16 @@ public class Game
 public class Figure
 {
     private string _name;
-    private bool _firstmove;
     private bool _alive;
     private int[] _position;
+    private bool _isWhite;
 
-    public Figure(string n, int[] position)
+    public Figure(string n, int[] position, bool isWhite)
     {
         _name = n;
-        _firstmove = false;
         _alive = true;
         _position = position;
-    }
-
-    public bool Firstmove
-    {
-        get { return _firstmove; }
-        set
-        {
-            if (value == false)
-            {
-                throw new ArgumentException("You can't set the firstmove to false");
-            }
-            else
-            {
-                _firstmove = value;
-            }
-        }
+        _isWhite = isWhite;
     }
 
     public string Name
@@ -398,6 +541,11 @@ public class Figure
                 throw new ArgumentException($"{nameof(value)} has to be two ints long and every value has to be between 0-7");
             }
         }
+    }
+
+    public bool IsWhite
+    {
+        get {return _isWhite;}
     }
 
     public override string ToString()

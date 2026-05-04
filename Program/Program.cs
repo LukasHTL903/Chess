@@ -6,22 +6,22 @@ public class Program
     public static void Main()
     {
         Game game = new();
-        int[] position = [1, 1];
+        int[] position = [1, 6];
         int[] enemypos = [0, 6];
-        Figure Knight = new("Kn", position);
-        Figure Enemy = new("T", enemypos);
+        Figure Pawn = new("P", position, true);
+        Figure Enemy = new("T", enemypos, false);
 
-        game.SetFigure(Knight, "      b     ,        2   ");
+        game.SetFigure(Pawn, "      b     ,        7   ");
         game.SetFigure(Enemy, "a, 7");
 
         Console.WriteLine(game);
         for(int count = 0; count < 3; count ++){
-            Console.WriteLine($"Where do you want to go with your {nameof(Knight)}");
+            Console.WriteLine($"Where do you want to go with your {nameof(Pawn)}");
 
-            game.Move(Knight, Console.ReadLine());
+            game.Move(Pawn, Console.ReadLine());
 
             Console.WriteLine(game);
-            Console.WriteLine($"x: {Knight.Position[1]}, y:{Knight.Position[0]}");
+            Console.WriteLine($"x: {Pawn.Position[1]}, y:{Pawn.Position[0]}");
             Console.WriteLine($"Enemy is Alive: {Enemy.Alive}");
         }
     }
