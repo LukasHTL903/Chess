@@ -383,42 +383,7 @@ public class Game
         string destination = _destination.Trim().Replace(" ", "").Replace(",", "");
         int[] position = new int[2];
 
-        if (destination[0] == 'a' || destination[0] == 'A')
-        {
-            position[1] = 0;
-        }
-        else if (destination[0] == 'b' || destination[0] == 'B')
-        {
-            position[1] = 1;
-        }
-        else if (destination[0] == 'c' || destination[0] == 'C')
-        {
-            position[1] = 2;
-        }
-        else if (destination[0] == 'd' || destination[0] == 'D')
-        {
-            position[1] = 3;
-        }
-        else if (destination[0] == 'e' || destination[0] == 'E')
-        {
-            position[1] = 4;
-        }
-        else if (destination[0] == 'f' || destination[0] == 'F')
-        {
-            position[1] = 5;
-        }
-        else if (destination[0] == 'g' || destination[0] == 'G')
-        {
-            position[1] = 6;
-        }
-        else if (destination[0] == 'h' || destination[0] == 'H')
-        {
-            position[1] = 7;
-        }
-        else
-        {
-            throw new ArgumentException("Only letters from 'a'-'h' or 'A'-'H'");
-        }
+        position[1] = char.ToLower(destination[0]) - 'a';
 
         if (!int.TryParse(destination[1].ToString(), out position[0]))
         {
