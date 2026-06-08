@@ -132,7 +132,7 @@ public class Game
     {
         bool inRange = false;
         
-        if(F.Type == Figure.FigureType.Pawn && F.IsWhite)
+        if(F.Type == Figure.FigureType.Pawn && !F.IsWhite)
         {
             if(yCurrent + 1 == y && xCurrent == x){
                 inRange = true;
@@ -148,7 +148,7 @@ public class Game
             }
         }
 
-        if(F.Type == Figure.FigureType.Pawn && !F.IsWhite)
+        if(F.Type == Figure.FigureType.Pawn && F.IsWhite)
         {
             if(yCurrent - 1 == y && xCurrent == x){
                 inRange = true;

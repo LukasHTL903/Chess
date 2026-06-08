@@ -213,7 +213,7 @@ public class PawnTests
     public void Pawn_CanMove_Forward()
     {
         var game = new Game();
-        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, true);
+        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, false);
 
         game.SetFigure(pawn, "a2");
 
@@ -226,7 +226,7 @@ public class PawnTests
     public void Pawn_CanMove_TwoSteps_FirstMove()
     {
         var game = new Game();
-        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, true);
+        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, false);
 
         game.SetFigure(pawn, "a2");
 
@@ -239,7 +239,7 @@ public class PawnTests
     public void Pawn_CannotMove_Backwards()
     {
         var game = new Game();
-        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, true);
+        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, false);
 
         game.SetFigure(pawn, "a2");
 
