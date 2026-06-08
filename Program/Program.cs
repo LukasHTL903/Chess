@@ -8,8 +8,8 @@ public class Program
         Game game = new();
         int[] position = [1, 6];
         int[] enemypos = [0, 6];
-        Figure Pawn = new("P", position, true);
-        Figure Enemy = new("T", enemypos, false);
+        Figure Pawn = new(Figure.FigureType.Pawn, position, true);
+        Figure Enemy = new(Figure.FigureType.Rook, enemypos, false);
 
         game.SetFigure(Pawn, "      b     ,        7   ");
         game.SetFigure(Enemy, "a, 7");

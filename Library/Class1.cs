@@ -33,7 +33,7 @@ public class Game
         }
         else                                                //if Enemy on new spot
         {
-            if(field[y, x].IsWhite != field[yCurrent, xCurrent].IsWhite){
+            if(field[y, x]?.IsWhite != field[yCurrent, xCurrent]?.IsWhite){
                 field[yCurrent, xCurrent] = null;
                 field[y, x].Alive = false;
                 field[y, x] = F;
@@ -60,7 +60,7 @@ public class Game
         int xCurrent = F.Position[0];
         int yCurrent = F.Position[1];
 
-        if (F.Name == "R" || F.Name == "r")
+        if (F.Type == Figure.FigureType.Rook)
         {  
             if (RookMove(x, y, xCurrent, yCurrent))
             {
@@ -71,7 +71,7 @@ public class Game
                 }
             }
         }
-        else if (F.Name == "K" || F.Name == "k")
+        else if (F.Type == Figure.FigureType.King)
         {
             if (KingMove(x, y, xCurrent, yCurrent))
             {
@@ -82,7 +82,7 @@ public class Game
                 }
             }
         }
-        else if (F.Name == "P" || F.Name == "p") 
+        else if (F.Type == Figure.FigureType.Pawn) 
         {
             if(PawnMove(F, x, y, xCurrent, yCurrent)){
                 if(SetFigure(F, x, y, xCurrent, yCurrent)){
@@ -92,7 +92,7 @@ public class Game
                 }
             }
             
-        } else if(F.Name == "Kn" || F.Name == "kn")
+        } else if(F.Type == Figure.FigureType.Knight)
         {
             if(KnightMove(x, y, xCurrent, yCurrent))
             {
@@ -104,7 +104,7 @@ public class Game
                 
             }
 
-        } else if (F.Name == "B" || F.Name == "b")
+        } else if (F.Type == Figure.FigureType.Bishop)
         {
             if(BishopMove(x, y, xCurrent, yCurrent)){
                 if(SetFigure(F, x, y, xCurrent, yCurrent)){
@@ -114,7 +114,7 @@ public class Game
                 }
             }
 
-        } else if(F.Name == "Q" || F.Name == "q")
+        } else if(F.Type == Figure.FigureType.Queen)
         {
             if(BishopMove(x, y, xCurrent, yCurrent) || RookMove(x, y, xCurrent, yCurrent)){
                 if(SetFigure(F, x, y, xCurrent, yCurrent)){
@@ -132,7 +132,7 @@ public class Game
     {
         bool inRange = false;
         
-        if(F.Name == "p")
+        if(F.Type == Figure.FigureType.Pawn && F.IsWhite)
         {
             if(yCurrent + 1 == y && xCurrent == x){
                 inRange = true;
@@ -148,7 +148,7 @@ public class Game
             }
         }
 
-        if(F.Name == "P")
+        if(F.Type == Figure.FigureType.Pawn && !F.IsWhite)
         {
             if(yCurrent - 1 == y && xCurrent == x){
                 inRange = true;
@@ -458,22 +458,31 @@ public class Game
 
 public class Figure
 {
-    private string _name;
+     public enum FigureType{
+        Pawn,
+        Rook,
+        Knight,
+        Bishop,
+        Queen,
+        King
+    }
+
+    private FigureType _type;
     private bool _alive;
     private int[] _position;
     private bool _isWhite;
 
-    public Figure(string n, int[] position, bool isWhite)
+    public Figure(FigureType t, int[] position, bool isWhite)
     {
-        _name = n;
+        _type = t;
         _alive = true;
         _position = position;
         _isWhite = isWhite;
     }
 
-    public string Name
+    public FigureType Type
     {
-        get { return _name; }
+        get { return _type; }
     }
 
     public bool Alive
@@ -483,7 +492,7 @@ public class Figure
         {
             if (value == true)
             {
-                throw new ArgumentException("You can't make a figure alive again.");
+                throw new ArgumentException("You can't make a figure return from the deads.");
             }
             else
             {
@@ -515,7 +524,16 @@ public class Figure
 
     public override string ToString()
     {
-        return Name;
+        return Type switch
+        {
+            FigureType.Rook => "R",
+            FigureType.Bishop => "B",
+            FigureType.Queen => "Q",
+            FigureType.King => "K",
+            FigureType.Pawn => "P",
+            FigureType.Knight => "Kn",
+            _ => "?"
+        };
     }
 }
 

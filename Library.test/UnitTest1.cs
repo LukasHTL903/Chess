@@ -7,7 +7,7 @@ public class FigureTests
     [Fact]
     public void Figure_IsAlive_ByDefault()
     {
-        var fig = new Figure("R", new int[] { 0, 0 }, true);
+        var fig = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         Assert.True(fig.Alive);
     }
@@ -15,7 +15,7 @@ public class FigureTests
     [Fact]
     public void Figure_CanBeKilled()
     {
-        var fig = new Figure("R", new int[] { 0, 0 }, true);
+        var fig = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         fig.Alive = false;
 
@@ -25,7 +25,7 @@ public class FigureTests
     [Fact]
     public void Figure_CannotBeRevived()
     {
-        var fig = new Figure("R", new int[] { 0, 0 }, true);
+        var fig = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         Assert.Throws<ArgumentException>(() => fig.Alive = true);
     }
@@ -33,7 +33,7 @@ public class FigureTests
     [Fact]
     public void Position_Set_Valid()
     {
-        var fig = new Figure("R", new int[] { 0, 0 }, true);
+        var fig = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         fig.Position = new int[] { 3, 4 };
 
@@ -44,14 +44,14 @@ public class FigureTests
     [Fact]
     public void Figure_isWhite()
     {
-        var fig = new Figure("R", new int[] { 0, 0 }, true);
+        var fig = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         Assert.True(fig.IsWhite);
     }
     [Fact]
     public void Position_Set_Invalid_Throws()
     {
-        var fig = new Figure("R", new int[] { 0, 0 }, true);
+        var fig = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         Assert.Throws<ArgumentException>(() => fig.Position = new int[] { 8, 0 });
     }
@@ -63,7 +63,7 @@ public class GameSetFigureTests
     public void SetFigure_PlacesFigureCorrectly()
     {
         var game = new Game();
-        var fig = new Figure("R", new int[] { 0, 0 }, true);
+        var fig = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         game.SetFigure(fig, "a1");
 
@@ -78,7 +78,7 @@ public class RookTests
     public void Rook_CanMove_Straight()
     {
         var game = new Game();
-        var rook = new Figure("R", new int[] { 0, 0 }, true);
+        var rook = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         game.SetFigure(rook, "a1");
 
@@ -92,7 +92,7 @@ public class RookTests
     public void Rook_CannotMove_Diagonal()
     {
         var game = new Game();
-        var rook = new Figure("R", new int[] { 0, 0 }, true);
+        var rook = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
 
         game.SetFigure(rook, "a1");
 
@@ -105,8 +105,8 @@ public class RookTests
     public void Rook_Blocked_ByPiece()
     {
         var game = new Game();
-        var rook = new Figure("R", new int[] { 0, 0 }, true);
-        var blocker = new Figure("P", new int[] { 0, 0 }, true);
+        var rook = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
+        var blocker = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, true);
 
         game.SetFigure(rook, "a1");
         game.SetFigure(blocker, "a3");
@@ -123,7 +123,7 @@ public class BishopTests
     public void Bishop_CanMove_Diagonal()
     {
         var game = new Game();
-        var bishop = new Figure("B", new int[] { 0, 0 }, true);
+        var bishop = new Figure(Figure.FigureType.Bishop, new int[] { 0, 0 }, true);
 
         game.SetFigure(bishop, "c1");
 
@@ -136,7 +136,7 @@ public class BishopTests
     public void Bishop_CannotMove_Straight()
     {
         var game = new Game();
-        var bishop = new Figure("B", new int[] { 0, 0 }, true);
+        var bishop = new Figure(Figure.FigureType.Bishop, new int[] { 0, 0 }, true);
 
         game.SetFigure(bishop, "c1");
 
@@ -153,7 +153,7 @@ public class KnightTests
     public void Knight_CanMove_LShape()
     {
         var game = new Game();
-        var knight = new Figure("Kn", new int[] { 0, 0 }, true);
+        var knight = new Figure(Figure.FigureType.Knight, new int[] { 0, 0 }, true);
 
         game.SetFigure(knight, "b1");
 
@@ -166,7 +166,7 @@ public class KnightTests
     public void Knight_CannotMove_Invalid()
     {
         var game = new Game();
-        var knight = new Figure("Kn", new int[] { 0, 0 }, true);
+        var knight = new Figure(Figure.FigureType.Knight, new int[] { 0, 0 }, true);
 
         game.SetFigure(knight, "b1");
 
@@ -183,7 +183,7 @@ public class KingTests
     public void King_CanMove_OneStep()
     {
         var game = new Game();
-        var king = new Figure("K", new int[] { 0, 0 }, true);
+        var king = new Figure(Figure.FigureType.King, new int[] { 0, 0 }, true);
 
         game.SetFigure(king, "e4");
 
@@ -196,7 +196,7 @@ public class KingTests
     public void King_CannotMove_TwoSteps()
     {
         var game = new Game();
-        var king = new Figure("K", new int[] { 0, 0 }, true);
+        var king = new Figure(Figure.FigureType.King, new int[] { 0, 0 }, true);
 
         game.SetFigure(king, "e4");
 
@@ -213,7 +213,7 @@ public class PawnTests
     public void Pawn_CanMove_Forward()
     {
         var game = new Game();
-        var pawn = new Figure("p", new int[] { 0, 0 }, true);
+        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, true);
 
         game.SetFigure(pawn, "a2");
 
@@ -226,7 +226,7 @@ public class PawnTests
     public void Pawn_CanMove_TwoSteps_FirstMove()
     {
         var game = new Game();
-        var pawn = new Figure("p", new int[] { 0, 0 }, true);
+        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, true);
 
         game.SetFigure(pawn, "a2");
 
@@ -239,7 +239,7 @@ public class PawnTests
     public void Pawn_CannotMove_Backwards()
     {
         var game = new Game();
-        var pawn = new Figure("p", new int[] { 0, 0 }, true);
+        var pawn = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, true);
 
         game.SetFigure(pawn, "a2");
 
@@ -257,8 +257,8 @@ public class CaptureTests
     {
         var game = new Game();
 
-        var rook = new Figure("R", new int[] { 0, 0 }, true);
-        var enemy = new Figure("P", new int[] { 0, 0 }, false);
+        var rook = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
+        var enemy = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, false);
 
         game.SetFigure(rook, "a1");
         game.SetFigure(enemy, "a5");
@@ -274,8 +274,8 @@ public class CaptureTests
     {
         var game = new Game();
 
-        var rook = new Figure("R", new int[] { 0, 0 }, true);
-        var enemy = new Figure("P", new int[] { 0, 0 }, true);
+        var rook = new Figure(Figure.FigureType.Rook, new int[] { 0, 0 }, true);
+        var enemy = new Figure(Figure.FigureType.Pawn, new int[] { 0, 0 }, true);
 
         game.SetFigure(rook, "a1");
         game.SetFigure(enemy, "a5");
